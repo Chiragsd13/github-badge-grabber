@@ -113,7 +113,7 @@ Write-Host "  Creates a temp repo, triggers all badges, then deletes it."
 Write-Host ""
 
 $yn = Read-Host "Continue? [y/N]"
-if ($yn.ToLower() -ne "y") { Write-Host "Aborted."; exit 0 }
+if ($null -ne $yn -and $yn.Trim() -ne "" -and $yn.ToLower() -ne "y") { Write-Host "Aborted."; exit 0 }
 
 # ============================================================
 # CREATE TEMP REPO
