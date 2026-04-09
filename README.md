@@ -18,15 +18,19 @@ Automatically earn every earnable GitHub Achievement badge in a single command. 
 
 ## Run
 
-```bash
-bash <(curl -s https://raw.githubusercontent.com/Chiragsd13/github-badge-grabber/master/github-badge-grabber.sh)
+**Windows CMD:**
+```cmd
+curl -sL https://raw.githubusercontent.com/Chiragsd13/github-badge-grabber/master/github-badge-grabber.sh -o grabber.sh && bash grabber.sh && del grabber.sh
 ```
 
-Or clone and run:
+**Windows PowerShell:**
+```powershell
+curl -sL https://raw.githubusercontent.com/Chiragsd13/github-badge-grabber/master/github-badge-grabber.sh -o grabber.sh; bash grabber.sh; Remove-Item grabber.sh
+```
 
+**Git Bash / WSL / Mac / Linux:**
 ```bash
-git clone https://github.com/Chiragsd13/github-badge-grabber
-bash github-badge-grabber/github-badge-grabber.sh
+bash <(curl -s https://raw.githubusercontent.com/Chiragsd13/github-badge-grabber/master/github-badge-grabber.sh)
 ```
 
 ## What Happens
