@@ -5,12 +5,16 @@
 # Creates a temp repo, triggers all badges, deletes it after.
 #
 # Usage (PowerShell):
-#   irm https://raw.githubusercontent.com/Chiragsd13/github-badge-grabber/master/github-badge-grabber.ps1 | iex
+#   irm https://raw.githubusercontent.com/Chiragsd13/github-badge-grabber/main/github-badge-grabber.ps1 | iex
 #
 # Usage (CMD):
-#   powershell -ExecutionPolicy Bypass -Command "irm https://raw.githubusercontent.com/Chiragsd13/github-badge-grabber/master/github-badge-grabber.ps1 | iex"
+#   powershell -ExecutionPolicy Bypass -Command "irm https://raw.githubusercontent.com/Chiragsd13/github-badge-grabber/main/github-badge-grabber.ps1 | iex"
+#
+# Optional: pass a custom co-author to get Pair Extraordinaire with someone else
+#   $env:BADGE_COAUTHOR = "Your Name <id+username@users.noreply.github.com>"; irm ... | iex
 #
 # Requirements: gh CLI installed and authenticated (gh auth login)
+#   For auto-delete: gh auth refresh --hostname github.com -s delete_repo
 # ============================================================
 
 $ErrorActionPreference = "Continue"
@@ -28,7 +32,8 @@ foreach ($p in $ghPaths) {
     }
 }
 
-$COAUTHOR = "Chirag Sood <121196981+Chiragsd13@users.noreply.github.com>"
+# Default co-author is @Chiragsd13. Override via $env:BADGE_COAUTHOR before running.
+$COAUTHOR = if ($env:BADGE_COAUTHOR) { $env:BADGE_COAUTHOR } else { "Chirag Sood <121196981+Chiragsd13@users.noreply.github.com>" }
 $script:BADGE_REPO = ""
 $script:USERNAME = ""
 $script:FULL = ""
@@ -41,8 +46,16 @@ function Head { param($m) Write-Host "`n>>> $m" -ForegroundColor White }
 function Cleanup {
     if ($script:BADGE_REPO -ne "") {
         Log "Deleting temp repo..."
-        gh api "repos/$script:USERNAME/$script:BADGE_REPO" --method DELETE 2>$null | Out-Null
-        Ok "Temp repo deleted. No trace left."
+        $delOut = gh api "repos/$script:USERNAME/$script:BADGE_REPO" --method DELETE 2>&1
+        $delOk = $LASTEXITCODE -eq 0
+        if ($delOk) {
+            Ok "Temp repo deleted. No trace left."
+        } else {
+            Warn "Could not delete repo automatically."
+            Warn "Run this to add delete permission, then delete manually:"
+            Warn "  gh auth refresh --hostname github.com -s delete_repo"
+            Warn "  gh repo delete $($script:USERNAME)/$($script:BADGE_REPO) --yes"
+        }
     }
 }
 
