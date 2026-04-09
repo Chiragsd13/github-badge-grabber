@@ -184,9 +184,10 @@ $pairPr = gh api "repos/$($script:FULL)/pulls" --method POST `
     -f title="feat: collaboration notes" `
     -f head="feat/collab" -f base="$db" --jq ".number"
 
-$mergeMsg = "feat: collaboration notes`n`nCo-authored-by: $COAUTHOR"
 gh api "repos/$($script:FULL)/pulls/$pairPr/merge" --method PUT `
-    -f merge_method="squash" -f commit_title="$mergeMsg" | Out-Null
+    -f merge_method="squash" `
+    -f commit_title="feat: collaboration notes" `
+    -f commit_message="Co-authored-by: $COAUTHOR" | Out-Null
 
 Ok "Pair Extraordinaire triggered. (Co-authored with @Chiragsd13)"
 
