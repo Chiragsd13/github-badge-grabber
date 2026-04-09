@@ -13,7 +13,20 @@
 # Requirements: gh CLI installed and authenticated (gh auth login)
 # ============================================================
 
-$ErrorActionPreference = "Stop"
+$ErrorActionPreference = "Continue"
+
+# Add common gh CLI install paths so this works from CMD/PowerShell without PATH issues
+$ghPaths = @(
+    "C:\Program Files\GitHub CLI",
+    "$env:LOCALAPPDATA\Programs\GitHub CLI",
+    "$env:ProgramFiles\GitHub CLI"
+)
+foreach ($p in $ghPaths) {
+    if (Test-Path "$p\gh.exe") {
+        $env:PATH = "$p;$env:PATH"
+        break
+    }
+}
 
 $COAUTHOR = "Chirag Sood <121196981+Chiragsd13@users.noreply.github.com>"
 $script:BADGE_REPO = ""
@@ -78,7 +91,7 @@ if (-not (Get-Command gh -ErrorAction SilentlyContinue)) {
     exit 1
 }
 
-$authCheck = gh auth status 2>&1
+gh auth status 2>&1 | Out-Null
 if ($LASTEXITCODE -ne 0) {
     Write-Host "[-] Not logged in. Run: gh auth login" -ForegroundColor Red
     exit 1
