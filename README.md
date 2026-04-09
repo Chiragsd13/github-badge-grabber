@@ -13,19 +13,18 @@ Automatically earn every earnable GitHub Achievement badge in a single command. 
 
 ## Requirements
 
-- [gh CLI](https://cli.github.com) installed
-- Authenticated: `gh auth login`
+- [gh CLI](https://cli.github.com) installed and authenticated (`gh auth login`)
 
 ## Run
 
 **Windows CMD:**
 ```cmd
-curl -sL https://raw.githubusercontent.com/Chiragsd13/github-badge-grabber/master/github-badge-grabber.sh -o grabber.sh && bash grabber.sh && del grabber.sh
+powershell -ExecutionPolicy Bypass -Command "irm https://raw.githubusercontent.com/Chiragsd13/github-badge-grabber/main/github-badge-grabber.ps1 | iex"
 ```
 
 **Windows PowerShell:**
 ```powershell
-curl -sL https://raw.githubusercontent.com/Chiragsd13/github-badge-grabber/master/github-badge-grabber.sh -o grabber.sh; bash grabber.sh; Remove-Item grabber.sh
+irm https://raw.githubusercontent.com/Chiragsd13/github-badge-grabber/main/github-badge-grabber.ps1 | iex
 ```
 
 **Git Bash / WSL / Mac / Linux:**
@@ -38,7 +37,7 @@ bash <(curl -s https://raw.githubusercontent.com/Chiragsd13/github-badge-grabber
 1. Verifies you are logged in via gh CLI
 2. Creates a temporary public repo
 3. Triggers Quickdraw, Pull Shark, YOLO, and Pair Extraordinaire
-4. Deletes the temp repo automatically
+4. Deletes the temp repo automatically — no trace left
 5. Badges appear on your profile within 24-48h
 
 ## Badges Not Included
