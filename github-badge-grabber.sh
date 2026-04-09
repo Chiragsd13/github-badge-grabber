@@ -204,9 +204,8 @@ pair_pr=$(gh api "repos/$FULL/pulls" \
 gh api "repos/$FULL/pulls/$pair_pr/merge" \
   --method PUT \
   -f merge_method="squash" \
-  -f "commit_title=feat: collaboration notes
-
-Co-authored-by: $COAUTHOR" >/dev/null
+  -f commit_title="feat: collaboration notes" \
+  -f commit_message="Co-authored-by: $COAUTHOR" >/dev/null
 
 ok "Pair Extraordinaire triggered. (Co-authored with @Chiragsd13)"
 
